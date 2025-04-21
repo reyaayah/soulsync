@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:soulsync/chat_provider.dart';
@@ -11,6 +12,7 @@ class ChatScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
+  Color _backgroundColor = Colors.deepPurple.shade200;
   final _controller = TextEditingController();
   final List<_ChatMessage> _messages = [];
   bool _isTyping = false;
@@ -33,6 +35,43 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
+  void _pickColor() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        Color tempColor = _backgroundColor;
+        return AlertDialog(
+          title: const Text('Pick a color that suits your mood'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: _backgroundColor,
+              onColorChanged: (color) {
+                tempColor = color;
+              },
+              showLabel: false,
+              pickerAreaHeightPercent: 0.8,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Select'),
+              onPressed: () {
+                setState(() {
+                  _backgroundColor = tempColor;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,14 +79,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         title: const Text('SoulSync'),
         backgroundColor: const Color.fromARGB(255, 157, 127, 210),
         elevation: 4,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.color_lens),
+            onPressed: _pickColor,
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.deepPurple.shade200, Colors.purple.shade800],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: _backgroundColor,
         ),
         child: Column(
           children: [
