@@ -1,32 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
-final dioProvider = Provider<Dio>((ref) {
-  return Dio(
-    BaseOptions(
-      baseUrl: 'http://127.0.0.1:8000',
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {'Content-Type': 'application/json'},
-    ),
-  );
-});
+final chatProvider = Provider((ref) => ChatService());
 
-final chatResponseProvider =
-    FutureProvider.family<String, String>((ref, userMessage) async {
-  final dio = ref.read(dioProvider);
+class ChatService {
+  final Dio _dio = Dio();
+  final String baseUrl = 'http://192.168.0.107:8000';
+  Future<String> getBotReply(String userInput) async {
+    final response = await _dio.post(
+      '$baseUrl/chat',
+      data: {'user_input': userInput},
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
 
-  try {
-    final response = await dio.post('/chat', data: {
-      'message': userMessage,
-    });
-
-    if (response.statusCode == 200) {
-      return response.data['reply'] ?? 'No reply from AI.';
+    if (response.statusCode == 200 && response.data['bot_reply'] != null) {
+      return response.data['bot_reply'];
     } else {
-      throw Exception('Error: ${response.statusCode}');
+      throw Exception('Failed to get bot response');
     }
-  } catch (e) {
-    return 'Error: $e';
   }
-});
+}
