@@ -16,23 +16,37 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _controller = TextEditingController();
   final List<_ChatMessage> _messages = [];
   bool _isTyping = false;
-
   void _sendMessage() async {
-    final input = _controller.text.trim();
-    if (input.isEmpty) return;
+    final userText = _controller.text.trim();
+    if (userText.isEmpty) return;
 
     setState(() {
-      _messages.insert(0, _ChatMessage(message: input, isUser: true));
+      _messages.insert(0, _ChatMessage(message: userText, isUser: true));
       _isTyping = true;
       _controller.clear();
     });
 
-    final aiReply = await ref.read(chatResponseProvider(input).future);
+    try {
+      // Call your FastAPI backend
+      final response = await ref.read(chatProvider).getBotReply(userText);
 
-    setState(() {
-      _messages.insert(0, _ChatMessage(message: aiReply, isUser: false));
-      _isTyping = false;
-    });
+      setState(() {
+        _messages.insert(0, _ChatMessage(message: response, isUser: false));
+      });
+    } catch (e) {
+      setState(() {
+        _messages.insert(
+            0,
+            _ChatMessage(
+              message: "Error: Unable to connect. Try again later.",
+              isUser: false,
+            ));
+      });
+    } finally {
+      setState(() {
+        _isTyping = false;
+      });
+    }
   }
 
   void _pickColor() {
