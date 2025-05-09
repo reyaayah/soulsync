@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:soulsync/pages/breathe_with_me.dart';
 import 'package:soulsync/pages/chat_screen.dart';
 
@@ -33,7 +32,7 @@ class SafeSpaceHomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  Text(
+                  const Text(
                     'Hey there, how are you really feeling today?',
                     style: TextStyle(
                       fontSize: 24,
@@ -110,9 +109,9 @@ class SafeSpaceHomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text('Privacy', style: TextStyle(color: Colors.white38)),
                       SizedBox(width: 10),
                       Text('About', style: TextStyle(color: Colors.white38)),

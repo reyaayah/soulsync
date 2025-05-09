@@ -130,7 +130,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             ? Colors.blueAccent
                             : Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 4,
@@ -177,7 +177,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             blurRadius: 4,
@@ -187,7 +187,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                       child: TextField(
                         controller: _controller,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Type your message...',
                           border: InputBorder.none,
                           prefixIcon: Icon(Icons.message, color: Colors.grey),

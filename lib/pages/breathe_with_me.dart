@@ -12,7 +12,6 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  late Timer _timer;
   late AudioPlayer _audioPlayer;
   bool _isPlaying = false;
   String _phase = "Breathe In";
@@ -38,7 +37,6 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
     _audioPlayer.play(AssetSource('audio/ocean-waves.mp3')).then((_) {
       setState(() => _isPlaying = true);
     }).catchError((error) {
-      print('Error playing audio: $error');
       setState(() => _isPlaying = false);
     });
 
@@ -55,7 +53,7 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
             _phase = "Hold";
             _affirmation = (_affirmations..shuffle()).first;
           });
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 2), () {
             setState(() => _phase = "Breathe Out");
             _controller.reverse();
           });
@@ -64,7 +62,7 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
             _phase = "Hold";
             _affirmation = (_affirmations..shuffle()).first;
           });
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 2), () {
             setState(() => _phase = "Breathe In");
             _controller.forward();
           });
@@ -85,7 +83,7 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
   }
 
   void _startSessionTimer() {
-    _sessionTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _sessionSeconds++);
     });
   }
@@ -139,7 +137,7 @@ class _BreatheWithMeScreenState extends State<BreatheWithMeScreen>
                             ? const Color.fromARGB(255, 177, 137, 137)
                             : Colors.purple.shade200,
                     shape: BoxShape.circle,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 20,
